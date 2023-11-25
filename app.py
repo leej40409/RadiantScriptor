@@ -8,8 +8,8 @@ st.set_page_config(page_title="RadiantScriptor")
 @st.cache(allow_output_mutation=True)
 def get_model():
     # Load tokenizer and model
-    tokenizer = AutoTokenizer.from_pretrained("MariamAde/Mistral_finetuned_v2")
-    model = AutoModelForCausalLM.from_pretrained("MariamAde/Mistral_finetuned_v2")
+    tokenizer = AutoTokenizer.from_pretrained("gpt2")
+    model = AutoModelForCausalLM.from_pretrained("gpt2")
     return tokenizer, model
 
 # Load model and tokenizer with a spinner to indicate loading process
