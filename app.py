@@ -14,8 +14,8 @@ st.set_page_config(page_title="RadiantScriptor")
 @st.experimental_singleton
 def get_model():
     # Load tokenizer and model
-    tokenizer = AutoTokenizer.from_pretrained("MariamAde/Mistral_finetuned_v2") #MariamAde/Mistral_finetuned_Base2
-    model = AutoModelForCausalLM.from_pretrained("MariamAde/Mistral_finetuned_v2").to(device)
+    tokenizer = AutoTokenizer.from_pretrained("models/MariamAde/Mistral_finetuned_v2") #MariamAde/Mistral_finetuned_Base2
+    model = AutoModelForCausalLM.from_pretrained("models/MariamAde/Mistral_finetuned_v2").to(device)
     return tokenizer, model
 
 # Load model and tokenizer with a spinner
