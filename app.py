@@ -1,5 +1,6 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import streamlit as st
+device = "cuda" # the device to load the model onto
 
 # Set the page configuration
 st.set_page_config(page_title="RadiantScriptor")
@@ -12,6 +13,7 @@ def get_model():
     model = AutoModelForCausalLM.from_pretrained("gpt2")
     return tokenizer, model
 
+
 # Load model and tokenizer with a spinner to indicate loading process
 with st.spinner('Model is being loaded..'):
       tokenizer, model = get_model()
@@ -19,11 +21,13 @@ with st.spinner('Model is being loaded..'):
 # Function to generate the radiology report
 def generate_report(labels):
     # Tokenize the input labels
-    inputs = tokenizer(labels, return_tensors="pt")
+    inputs = tokenizer(labels, return_tensors="pt").to(device)
+    model.to(device)
     # Generate output using the model
-    output = model.generate(**inputs)
+    output = model.generate(**inputs, max_new_tokens=100, do_sample=True)
     # Decode the output sentences
-    sentences = tokenizer.decode(output[0], skip_special_tokens=True)
+   #sentences = tokenizer.decode(output[0], skip_special_tokens=True)
+    sentences = tokenizer.batch_decode(output[0])
     return sentences
 
 # Streamlit interface for user interaction
