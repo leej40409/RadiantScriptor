@@ -9,11 +9,11 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 st.set_page_config(page_title="RadiantScriptor")
 
 # Caching the model loading function to improve performance
-@st.cache_data(allow_output_mutation=True)
+@st.experimental_singleton
 def get_model():
     # Load tokenizer and model
-    tokenizer = AutoTokenizer.from_pretrained("gpt2")
-    model = AutoModelForCausalLM.from_pretrained("gpt2")
+    tokenizer = AutoTokenizer.from_pretrained("MariamAde/Mistral_finetuned_Base2")
+    model = AutoModelForCausalLM.from_pretrained("MariamAde/Mistral_finetuned_Base2").to(device)
     return tokenizer, model
 
 # Load model and tokenizer with a spinner
@@ -24,11 +24,10 @@ with st.spinner('Model is being loaded..'):
 def generate_report(labels):
     # Tokenize the input labels
     inputs = tokenizer(labels, return_tensors="pt").to(device)
-    model.to(device)
     # Generate output using the model
     output = model.generate(**inputs, max_new_tokens=100, do_sample=True)
     # Decode the output sentences
-    sentences = tokenizer.batch_decode(output[0])
+    sentences = tokenizer.batch_decode(output, skip_special_tokens=True)
     return sentences
 
 # Streamlit interface for user interaction
