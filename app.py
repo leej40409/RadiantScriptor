@@ -15,7 +15,7 @@ st.set_page_config(page_title="RadiantScriptor")
 def get_model():
     # Load tokenizer and model
     tokenizer = AutoTokenizer.from_pretrained("MariamAde/Mistral_finetuned_Base2") #MariamAde/Mistral_finetuned_Base2
-    model = AutoModelForCausalLM.from_pretrained("MariamAde/Mistral_finetuned_Base2").to(device)
+    model = AutoModelForCausalLM.from_pretrained("MariamAde/Mistral_finetuned_Base2",low_cpu_mem_usage=True, device_map="cpu").to(device)
     return tokenizer, model
 
 # Load model and tokenizer with a spinner
