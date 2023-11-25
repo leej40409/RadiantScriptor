@@ -14,8 +14,8 @@ st.set_page_config(page_title= "RadiantScriptor ")
 
 def get_model():
     #device = "cuda" # the device to load the model onto
-    tokenizer = AutoTokenizer.from_pretrained("J4Lee/Medalpaca_finetuned_test")
-    model = AutoModelForCausalLM.from_pretrained("J4Lee/Medalpaca_finetuned_test") #, low_cpu_mem_usage=True, device_map="cpu")
+    tokenizer = AutoTokenizer.from_pretrained("MariamAde/Mistral_finetuned_v2")
+    model = AutoModelForCausalLM.from_pretrained("MariamAde/Mistral_finetuned_v2") #, low_cpu_mem_usage=True, device_map="cpu")
     
     return tokenizer, model
 with st.spinner('Model is being loaded..'):
