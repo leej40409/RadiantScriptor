@@ -5,7 +5,7 @@ import requests
 # Function to call the Hugging Face model
 def query_huggingface_model(prompt):
     API_TOKEN = "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"  # Replace with your Hugging Face API token
-    API_URL = "https://api-inference.huggingface.co/models/MariamAde/Mistral_finetuned_Base2"  # Replace with your model's API URL
+    API_URL = "https://poxj7ux0l7kszkjs.us-east-1.aws.endpoints.huggingface.cloud"  # Replace with your model's API URL
 
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
     response = requests.post(API_URL, headers=headers, json={"inputs": prompt})
