@@ -19,10 +19,10 @@ def query_huggingface_model(prompt):
         return {"error": response.text}
 
 
-st.title("Radiology Report Generator")
+st.title("RadiantScriptor")
 
 # User input for uploading a text file
-uploaded_file = st.file_uploader("Upload a text file", type=["txt"])
+uploaded_file = st.file_uploader("Upload a finding labels", type=["txt"])
 user_prompt = ""
 
 if uploaded_file is not None:
