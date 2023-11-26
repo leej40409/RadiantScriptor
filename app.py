@@ -39,7 +39,7 @@ if st.button("Generate Report"):
             st.error(f"Error: {response['error']}")
         else:
             # Assuming the response is a JSON object containing the generated text
-            report = response[0]['findings'] 
+            report = response[0] 
             # Display the report
             st.text_area("Generated Report:", value=report, height=300)
 
