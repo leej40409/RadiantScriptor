@@ -2,13 +2,16 @@
 import streamlit as st
 import requests
 
-# Function to call the Hugging Face model
-def query_huggingface_model(prompt):
-    API_TOKEN = "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"  # Replace with your Hugging Face API token
-    API_URL = "https://poxj7ux0l7kszkjs.us-east-1.aws.endpoints.huggingface.cloud"  # Replace with your model's API URL
+# Set the page configuration
+st.set_page_config(page_title="RadiantScriptor")
+
+# Function to call the Hugging Face model API
+def query_huggingface_model(data):
+    API_TOKEN = "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"  
+    API_URL = "https://poxj7ux0l7kszkjs.us-east-1.aws.endpoints.huggingface.cloud"  
 
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
-    response = requests.post(API_URL, headers=headers, json={"inputs": prompt})
+    response = requests.post(API_URL, headers=headers, json={"inputs": data})
     
     if response.status_code == 200:
         return response.json()
@@ -16,27 +19,29 @@ def query_huggingface_model(prompt):
         return {"error": response.text}
 
 # Streamlit interface
-def main():
-    st.title("My Fine-tuned Model Demo")
+st.title("Radiology Report Generator")
 
-    # User input
-    user_input = st.text_area("Enter your text here", "")
+# User input for uploading a text file
+uploaded_file = st.file_uploader("Upload a text file", type=["txt"])
+labels = ""
 
-    # Button to make the prediction
-    if st.button("Predict"):
-        with st.spinner("Predicting..."):
-            response = query_huggingface_model(user_input)
-            if "error" in response:
-                st.error(response["error"])
-            else:
-                st.success("Prediction Success")
-                st.write(response)  # Modify this based on how your model's response is structured
+if uploaded_file is not None:
+    # Read the contents of the uploaded text file
+    labels = uploaded_file.read().decode("utf-8")
+    # Display the content to the user (optional)
+    st.text_area("File content:", value=labels, height=150)
 
-if __name__ == "__main__":
-    main()
-
-
-
+if st.button("Generate Report"):
+    with st.spinner('Generating report...'):
+        # Query the Hugging Face model API
+        response = query_huggingface_model(labels)
+        if "error" in response:
+            st.error(f"Error: {response['error']}")
+        else:
+            # Assuming the response is a JSON object containing the generated text
+            report = response[0]['findings'] 
+            # Display the report
+            st.text_area("Generated Report:", value=report, height=300)
 
 
 
