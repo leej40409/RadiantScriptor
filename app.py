@@ -6,44 +6,42 @@ import requests
 st.set_page_config(page_title="RadiantScriptor")
 
 # Function to call the Hugging Face model API
-def query_huggingface_model(data):
+def query_huggingface_model(prompt):
     API_TOKEN = "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"  
     API_URL = "https://poxj7ux0l7kszkjs.us-east-1.aws.endpoints.huggingface.cloud"  
-
+    
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
-    response = requests.post(API_URL, headers=headers, json={"inputs": data})
+    response = requests.post(API_URL, headers=headers, json={"inputs": prompt})
     
     if response.status_code == 200:
         return response.json()
     else:
         return {"error": response.text}
 
-# Streamlit interface
+
 st.title("Radiology Report Generator")
 
 # User input for uploading a text file
 uploaded_file = st.file_uploader("Upload a text file", type=["txt"])
-labels = ""
+user_prompt = ""
 
 if uploaded_file is not None:
     # Read the contents of the uploaded text file
-    labels = uploaded_file.read().decode("utf-8")
+    user_prompt = uploaded_file.read().decode("utf-8")
     # Display the content to the user (optional)
-    st.text_area("File content:", value=labels, height=150)
+    st.text_area("Uploaded Text:", value=user_prompt, height=150)
 
 if st.button("Generate Report"):
     with st.spinner('Generating report...'):
         # Query the Hugging Face model API
-        response = query_huggingface_model(labels)
+        response = query_huggingface_model(user_prompt)
         if "error" in response:
             st.error(f"Error: {response['error']}")
         else:
             # Assuming the response is a JSON object containing the generated text
-            report = response[0] 
+            report = response[0]['generated_text']  # Adjust based on the actual response structure
             # Display the report
             st.text_area("Generated Report:", value=report, height=300)
-
-
 
 
 
